@@ -1,0 +1,22 @@
+{
+  "name": "tp-preentrega-tt-node2025",
+  "version": "1.0.0",
+  "description": "Proyecto del programa impartido por Talento Tech 2025. Backend de un e-commerce (usando FakeStore Api).",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RDMartucci/TP-PreEntrega-TT-Node2025.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RDMartucci/TP-PreEntrega-TT-Node2025/issues"
+  },
+  "homepage": "https://github.com/RDMartucci/TP-PreEntrega-TT-Node2025#readme"
+}
