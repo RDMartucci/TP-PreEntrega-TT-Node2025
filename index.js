@@ -1,213 +1,137 @@
-// import { obtenerProductos, obtenerProductoPorId } from './API/apiFakeStore.js';
+import { obtenerProductos, obtenerProductoPorId, agregarProducto, eliminarProducto, actualizarProducto } from './API/apiFakeStore.js';
 
-// async function correrServidor() {
-//     console.log("...corriendo servidor ...");
-
-//     const argumentos = process.argv.slice(2);
-//     console.log('Argumentos por defecto:', argumentos);
-
-//     const comando = argumentos[0];//toma el primer argumento.
-//     console.log('Comando:', comando);
-
-//     const parametros = argumentos[1]; //toma el segundo argumento, como parámetro del comando.
-//     console.log('Parámetros:', parametros);
-
-//     switch (comando) {
-//         case 'GET':
-//             console.log('Comando GET...');
-
-//             if (typeof parametros === 'string') {
-//                 console.log('Parámetro recibido:', parametros);
-
-//                 if (parametros === "products") {
-//                     const productos = await obtenerProductos();
-//                     console.log(':----: Listando todos los productos :----:');
-                    
-//                     if (productos && Array.isArray(productos)) {
-//                         productos.forEach(producto => {
-//                             console.log(`ID: ${producto.id} | 
-//                                         Nombre: ${producto.title} | 
-//                                         Precio: $${producto.price} | 
-//                                         Descripción: ${producto.description} | 
-//                                         Categoria: ${producto.category} |
-//                                         Imagen: ${producto.image}`);
-//                             console.log('--------------------------------------------------');
-//                         });
-                    
-                    
-//                     // productos.map((producto) => {
-//                         // console.log(`ID: ${producto.id} | 
-//                         //             Nombre: ${producto.title} | 
-//                         //             Precio: $${producto.price} | 
-//                         //             Descripción: ${producto.description} | 
-//                         //             Categoria: ${producto.category} |
-//                         //             Imagen: ${producto.image}`);
-//                         // console.log('--------------------------------------------------');
-//                     // }
-//                     //);
-//                     console.log(':----: Fin del listado :----:');
-//                 }
-//                 break;
-//                 if (parametros.startsWith("products/")) {
-//                     const id = parametros.split("/")[1];
-//                     if (!id) {
-//                         console.log('Falta el ID del producto.');
-//                         break;
-//                     }
-//                     if (isNaN(id) || id < 1 || id > 20) {
-//                         console.log('ID inválido. Debe ser un número entre 1 y 20.');
-//                         break;
-//                     }
-//                     await obtenerProductoPorId(id);
-//                     console.log(`Listando el producto con id: ${id}...`);
-//                 }
-//             } else {
-//                 console.log('Falta el parámetro para el comando GET. Usa "products" o "products/{id}".');
-//             }
-//             break;
-//         case 'POST':
-//             if (parametros) {
-//                 console.log(`Recibimos ${parametros} satisfactoriamente.`);
-//             } else {
-//                 console.log('Falta el dato para el comando POST.');
-//             }
-//             break;
-//         case 'PUT':
-//             if (parametros) {
-//                 console.log(`Modificamos el item con id: ${parametros} satisfactoriamente.`);
-//             } else {
-//                 console.log('Falta el id para el comando PUT.');
-//             }
-//             break;
-//         case 'DELETE':
-//             if (parametros) {
-//                 console.log(`El item con el id: ${parametros} se eliminó con éxito.`);
-//             } else {
-//                 console.log('Falta el id para el comando DELETE.');
-//             }
-//             break;
-//         default:
-//             console.log('Comando no reconocido. Usa "GET", "POST {data}", "PUT {id}" o "DELETE {id}".');
-//             break;
-//     }
-// }
-
-// correrServidor();
-
-
-import { obtenerProductos, obtenerProductoPorId } from './API/apiFakeStore.js';
-
-// Convertir la función principal a async para poder usar await
 async function correrServidor() {
     console.log("...corriendo servidor ...");
-
     const argumentos = process.argv.slice(2);
-    //console.log('Argumentos por defecto:', argumentos);
-
-    const comando = argumentos[0];
-    //console.log('Comando:', comando);
-
+    const comando = argumentos[0] ? argumentos[0].toUpperCase() : null;
     const parametros = argumentos.slice(1);
-    //console.log('Parámetros:', parametros);
+    if (parametros.length === 0) {
+        console.log(`Falta el parámetro para el comando ${comando} ingresado!`);
+        return;
+    }
 
     switch (comando) {
         case 'GET':
-            console.log('Comando GET...');
+            //console.log(`Comando ${comando}...`);
+            //console.log('Parámetro recibido:', parametros);
 
-            //if (typeof parametros === 'string') {
-                console.log('Parámetro recibido:', parametros);
+            if (parametros[0] === "products") {
+                console.log(':----: Listando todos los productos :----:');
 
-                if (parametros[0] === "products") {
-                    console.log(':----: Listando todos los productos :----:');
-                    
-                    // Usar await para esperar que la promesa se resuelva
-                    const productos = await obtenerProductos(); 
-                    
-    //                 if (productos && Array.isArray(productos)) {
-    //                     productos.forEach(producto => {
-    //                         console.log(`ID: ${producto.id}  
-    // Nombre: ${producto.title}  
-    // Precio: $${producto.price}  
-    // Descripción: ${producto.description}  
-    // Categoria: ${producto.category} 
-    // Imagen: ${producto.image}`);
-    // console.log('--------------------------------------------------');
-    //                     });
-    //                     console.log(':----: Fin del listado :----:');
-    //                 } else {
-    //                     console.log('No se pudieron obtener los productos.');
-    //                 }
-
+                const productos = await obtenerProductos();
                 if (productos && Array.isArray(productos)) {
                     productos.forEach(producto => {
-                        const { id, title, price, description, category, image } = producto; 
-                        console.log(`ID: ${id}  
-                Nombre: ${title}  
-                Precio: $${price}  
-                Descripción: ${description}  
-                Categoria: ${category} 
-                Imagen: ${image}`);
+                        const { id, title, price, description, category, image } = producto;
+                        console.log(`ID.........: ${id}`);  
+                        console.log(`Nombre.....: ${title}`);  
+                        console.log(`Precio.....: $ ${price}`); 
+                        console.log(`Descripción: ${description}`);  
+                        console.log(`Categoría..: ${category}`); 
+                        console.log(`Imagen.....: ${image}`);
                         console.log('--------------------------------------------------');
+
                     });
                     console.log(':----: Fin del listado :----:');
                 } else {
                     console.log('No se pudieron obtener los productos.');
                 }
 
-                } else if (parametros.startsWith("products/")) { // Usa else if para que solo se ejecute uno de los bloques
-                    const id = parametros.split("/")[1];
-                    if (!id) {
-                        console.log('Falta el ID del producto.');
-                        break;
-                    }
-                    if (isNaN(id) || id < 1 || id > 20) {
-                        console.log('ID inválido. Debe ser un número entre 1 y 20.');
-                        break;
-                    }
-                    // Usar await para esperar la respuesta de obtenerProductoPorId
-                    const producto = await obtenerProductoPorId(id);
-                    if (producto) {
-                        console.log(`Listando el producto con id: ${id}...`);
-                        console.log(`ID: ${producto.id}  
-    Nombre: ${producto.title}  
-    Precio: $${producto.price}  
-    Descripción: ${producto.description}  
-    Categoria: ${producto.category} 
-    Imagen: ${producto.image}`);
-    console.log('--------------------------------------------------');
-                    } else {
-                        console.log(`No se encontró el producto con id: ${id}`);
-                    }
+            }
+            if (parametros[0] && parametros[0].startsWith("products/")) {
+                const id = parametros[0].split("/")[1];
+                if (!id) {
+                    console.log('Falta el ID del producto.');
+                    break;
                 }
-            //} else {
-            //    console.log('Falta el parámetro para el comando GET. Usa "products" o "products/{id}".');
-            //}
+                if (isNaN(id) || id < 1) {
+                    console.log('ID inválido. Debe ser un número mayor a 1.');
+                    break;
+                }
+                const producto = await obtenerProductoPorId(id);
+                if (producto) {
+                    console.log(`Mostrando el producto con id: ${id}...:`);
+                    console.log(`ID.........: ${producto.id}`);  
+                    console.log(`Nombre.....: ${producto.title}`);  
+                    console.log(`Precio.....: $ ${producto.price}`); 
+                    console.log(`Descripción: ${producto.description}`);  
+                    console.log(`Categoria..: ${producto.category}`); 
+                    console.log(`Imagen.....: ${producto.image}`);
+                    console.log('--------------------------------------------------');
+                }
+            }
             break;
 
         case 'POST':
-            console.log('Comando POST...');
-            //   if (typeof parametros === 'string') {
-                console.log('Parámetro recibido:', parametros);
-            // } else {
-                // console.log('Falta el dato para el comando POST.');
-            
-            if (parametros === "products") {
-                console.log(':----: Agregando un nuevo producto :----:');
-
-                //let productoNuevo = { title: 'Algodón', price: 29.99, description: 'Muy chuavechito chuavechito...', category: 'insumos', image: 'https://i.pravatar.cc' };
-                console.log('Producto a agregar:', productoNuevo);
+            //console.log(`Comando ${comando}...`);
+            //console.log('Parámetro recibido:', parametros);
+            if (parametros[0] === "products" && parametros.length > 1) {
+                console.log('Agregando un nuevo producto...');
+                const nombre = parametros[1];
+                const precio = parametros[2];
+                const categoria = parametros[3];
+                let productoNuevo = {
+                    title: `${nombre}`,
+                    price: `${precio}`,
+                    category: `${categoria}`,
+                };
                 await agregarProducto(productoNuevo);
-                console.log(':----: Producto agregado :----:');
-
+                console.log(':----: Producto agregado Correctamente :----:');
+            } else {
+                console.log('Falta el dato para el comando POST. Usa "products {nombre} {precio} {categoria}".');
             }
-
-
-        break;
-
-        case 'PUT':
             break;
 
         case 'DELETE':
+            if (parametros[0] && parametros[0].startsWith("products/")) {
+                const id = parametros[0].split("/")[1];
+                if (!id) {
+                    console.log('Falta el ID del producto.');
+                    break;
+                }
+                if (isNaN(id) || id < 1) {
+                    console.log('ID inválido. Debe ser un número mayor a 1.');
+                    break;
+                }
+                const prodEliminado = await eliminarProducto(id);
+                if (prodEliminado) {
+                    console.log(`Producto con id: ${id} eliminado correctamente.`);
+                    break;
+                }
+            } else {
+                console.log('Falta el parámetro para el comando DELETE. Usa "products/{id}".'); // Agregué un else para feedback
+            }
+
+            break;
+
+        case 'PUT':
+            if( parametros[0] && parametros[0].startsWith("products/") && parametros.length > 1) {
+                const id = parametros[0].split("/")[1];
+                if (!id) {
+                    console.log('Falta el ID del producto.');
+                    break;
+                }
+                if (isNaN(id) || id < 1) {
+                    console.log('ID inválido. Debe ser un número mayor a 1.');
+                    break;
+                }
+                const nombre = parametros[1];
+                const precio = parametros[2];
+                const categoria = parametros[3];
+                let productoActualizado = {
+                    id: parseInt(id),
+                    title: `${nombre}`,
+                    price: `${precio}`,
+                    category: `${categoria}`,
+                };
+                const prodActualizado = await actualizarProducto(id, productoActualizado);
+                if (prodActualizado) {
+                    console.log(`Producto con id: ${id} actualizado correctamente.`);
+                    break;
+                }
+            } else {
+                console.log('Falta el parámetro para el comando PUT. Usa "products/{id} {nombre} {precio} {categoria}".'); // Agregué un else para feedback
+            }
+            
             break;
 
         default:
