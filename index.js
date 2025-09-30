@@ -12,9 +12,6 @@ async function correrServidor() {
 
     switch (comando) {
         case 'GET':
-            //console.log(`Comando ${comando}...`);
-            //console.log('Parámetro recibido:', parametros);
-
             if (parametros[0] === "products") {
                 console.log(':----: Listando todos los productos :----:');
 
@@ -58,6 +55,8 @@ async function correrServidor() {
                     console.log(`Imagen.....: ${producto.image}`);
                     console.log('--------------------------------------------------');
                 }
+            } else if (parametros[0] !== "products") {
+                console.log('Falta el parámetro para el comando GET. Usa "products" o "products/{id}".');
             }
             break;
 

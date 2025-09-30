@@ -1,31 +1,4 @@
 # TP-PreEntrega-TT-Node2025
-Proyecto del programa impartido por Talento Tech 2025. Backend de un e-commerce (usando FakeStore Api).
-
-<!-- ejemplo de uso:
-
-Obtener todos los productos:
-    npm run start GET products
-
-Obtener un producto solo (buscado por id):
-    npm run start GET products/<productId>
-
-    ejemplo:
-    npm run start GET products/7
-
-Crear un Producto Nuevo:
-    npm run start POST products <title> <price> <category>
-
-    ejemplo:
-    npm run start POST products T-Shirt-Rex 300 remeras
-
-Eliminar un Producto:
-    npm run start DELETE products/<productId>
-
-    ejempplo:
-    Eliminar un Producto:
-    npm run start DELETE products/11 -->
-
-# TP-PreEntrega-TT-Node2025
 
 Proyecto del programa **Talento Tech 2025**.  
 Backend de un **E-Commerce** desarrollado en **Node.js**, utilizando la [FakeStore API](https://fakestoreapi.com/) como base de datos de prueba.
