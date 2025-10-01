@@ -5,6 +5,20 @@ async function correrServidor() {
     const argumentos = process.argv.slice(2);
     const comando = argumentos[0] ? argumentos[0].toUpperCase() : null;
     const parametros = argumentos.slice(1);
+
+    function esIdValido(id) {
+        if (!id) {
+            console.log('Falta el ID del producto.');
+            return false;
+        } else
+        if (isNaN(id) || id < 1) {
+            console.log('ID inválido. Debe ser un número mayor a 1.');
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     if (parametros.length === 0) {
         console.log(`Falta el parámetro para el comando ${comando} ingresado!`);
         return;
@@ -17,13 +31,14 @@ async function correrServidor() {
 
                 const productos = await obtenerProductos();
                 if (productos && Array.isArray(productos)) {
-                    productos.forEach(producto => {
+                    // productos.forEach(producto => {
+                    productos.map(producto => {
                         const { id, title, price, description, category, image } = producto;
-                        console.log(`ID.........: ${id}`);  
-                        console.log(`Nombre.....: ${title}`);  
-                        console.log(`Precio.....: $ ${price}`); 
-                        console.log(`Descripción: ${description}`);  
-                        console.log(`Categoría..: ${category}`); 
+                        console.log(`ID.........: ${id}`);
+                        console.log(`Nombre.....: ${title}`);
+                        console.log(`Precio.....: $ ${price}`);
+                        console.log(`Descripción: ${description}`);
+                        console.log(`Categoría..: ${category}`);
                         console.log(`Imagen.....: ${image}`);
                         console.log('--------------------------------------------------');
 
@@ -36,22 +51,15 @@ async function correrServidor() {
             }
             if (parametros[0] && parametros[0].startsWith("products/")) {
                 const id = parametros[0].split("/")[1];
-                if (!id) {
-                    console.log('Falta el ID del producto.');
-                    break;
-                }
-                if (isNaN(id) || id < 1) {
-                    console.log('ID inválido. Debe ser un número mayor a 1.');
-                    break;
-                }
+                if (!esIdValido(id)) break;
                 const producto = await obtenerProductoPorId(id);
                 if (producto) {
                     console.log(`Mostrando el producto con id: ${id}...:`);
-                    console.log(`ID.........: ${producto.id}`);  
-                    console.log(`Nombre.....: ${producto.title}`);  
-                    console.log(`Precio.....: $ ${producto.price}`); 
-                    console.log(`Descripción: ${producto.description}`);  
-                    console.log(`Categoria..: ${producto.category}`); 
+                    console.log(`ID.........: ${producto.id}`);
+                    console.log(`Nombre.....: ${producto.title}`);
+                    console.log(`Precio.....: $ ${producto.price}`);
+                    console.log(`Descripción: ${producto.description}`);
+                    console.log(`Categoria..: ${producto.category}`);
                     console.log(`Imagen.....: ${producto.image}`);
                     console.log('--------------------------------------------------');
                 }
@@ -75,6 +83,8 @@ async function correrServidor() {
                 };
                 await agregarProducto(productoNuevo);
                 console.log(':----: Producto agregado Correctamente :----:');
+                console.log(productoNuevo);
+                console.log('--------------------------------------------------');
             } else {
                 console.log('Falta el dato para el comando POST. Usa "products {nombre} {precio} {categoria}".');
             }
@@ -83,36 +93,24 @@ async function correrServidor() {
         case 'DELETE':
             if (parametros[0] && parametros[0].startsWith("products/")) {
                 const id = parametros[0].split("/")[1];
-                if (!id) {
-                    console.log('Falta el ID del producto.');
-                    break;
-                }
-                if (isNaN(id) || id < 1) {
-                    console.log('ID inválido. Debe ser un número mayor a 1.');
-                    break;
-                }
+
+                if (!esIdValido(id)) break;
                 const prodEliminado = await eliminarProducto(id);
                 if (prodEliminado) {
-                    console.log(`Producto con id: ${id} eliminado correctamente.`);
+                    console.log(':----: Producto ACTUALIZADO Correctamente :----:');
+                    console.log(prodEliminado);
+                    console.log('--------------------------------------------------');
                     break;
                 }
             } else {
-                console.log('Falta el parámetro para el comando DELETE. Usa "products/{id}".'); // Agregué un else para feedback
+                console.log('Falta el parámetro para el comando DELETE. Usa "products/{id}".');
             }
-
             break;
 
         case 'PUT':
-            if( parametros[0] && parametros[0].startsWith("products/") && parametros.length > 1) {
+            if (parametros[0] && parametros[0].startsWith("products/") && parametros.length > 1) {
                 const id = parametros[0].split("/")[1];
-                if (!id) {
-                    console.log('Falta el ID del producto.');
-                    break;
-                }
-                if (isNaN(id) || id < 1) {
-                    console.log('ID inválido. Debe ser un número mayor a 1.');
-                    break;
-                }
+                if (!esIdValido(id)) break;
                 const nombre = parametros[1];
                 const precio = parametros[2];
                 const categoria = parametros[3];
@@ -123,14 +121,15 @@ async function correrServidor() {
                     category: `${categoria}`,
                 };
                 const prodActualizado = await actualizarProducto(id, productoActualizado);
-                if (prodActualizado) {
-                    console.log(`Producto con id: ${id} actualizado correctamente.`);
+                if (prodActualizado) {    
+                    console.log(':----: Producto ACTUALIZADO Correctamente :----:');
+                    console.log(prodActualizado);
+                    console.log('--------------------------------------------------');
                     break;
                 }
             } else {
                 console.log('Falta el parámetro para el comando PUT. Usa "products/{id} {nombre} {precio} {categoria}".'); // Agregué un else para feedback
             }
-            
             break;
 
         default:
