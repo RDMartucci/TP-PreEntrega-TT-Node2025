@@ -3,20 +3,36 @@ function esResValido(response, idNum) {
         console.log(`APIFS->Respuesta no OK al obtener el producto con ID ${idNum}. Código: ${response.status}`);
         //throw new Error(`APIFS->Error HTTP: ${response.status}`);
         return false;
-    } 
+    }
     return true;
 }
 
+const urlAPI = 'https://fakestoreapi.com/products';
+const configGet = {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+};
+const configPost = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' }
+};
+const configDel = {
+    method: 'DELETE',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+};
+const configPut = {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' }
+};
+
+
 export async function obtenerProductos() {
     try {
-        const urlAPI = 'https://fakestoreapi.com/products';
-        const config = {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        };
-        const response = await fetch(urlAPI, config);
+        const response = await fetch(urlAPI, configGet);
         const data = await response.json();
         return data;
     } catch (error) {
@@ -26,15 +42,8 @@ export async function obtenerProductos() {
 
 export async function obtenerProductoPorId(id) {
     try {
-        const urlAPI = 'https://fakestoreapi.com/products';
         let idNum = parseInt(id);
-        const config = {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        };
-        const response = await fetch(`${urlAPI}/${idNum}`, config);
+        const response = await fetch(`${urlAPI}/${idNum}`, configGet);
         if (!esResValido(response, idNum)) {
             return null;
         } else {
@@ -54,14 +63,11 @@ export async function obtenerProductoPorId(id) {
 
 export async function agregarProducto(producto) {
     try {
-        const urlAPI = 'https://fakestoreapi.com/products';
-        const config = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+        const configConBody = {
+            ...configPost,
             body: JSON.stringify(producto)
-        };
-
-        const response = await fetch(urlAPI, config);
+        }
+        const response = await fetch(urlAPI, configConBody);
         const data = await response.json();
         return data;
     } catch (error) {
@@ -71,15 +77,8 @@ export async function agregarProducto(producto) {
 
 export async function eliminarProducto(id) {
     try {
-        const urlAPI = 'https://fakestoreapi.com/products';
         let idNum = parseInt(id);
-        const config = {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        };
-        const response = await fetch(`${urlAPI}/${idNum}`, config);
+        const response = await fetch(`${urlAPI}/${idNum}`, configDel);
         if (!esResValido(response, idNum)) {
             return null;
         } else {
@@ -99,13 +98,11 @@ export async function eliminarProducto(id) {
 export async function actualizarProducto(id, productoActualizado) {
     try {
         let idNum = parseInt(id);
-        const urlAPI = 'https://fakestoreapi.com/products';
-        const config = {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+        const configConBody = {
+            ...configPut,
             body: JSON.stringify(productoActualizado)
         };
-        const response = await fetch(`${urlAPI}/${idNum}`, config);
+        const response = await fetch(`${urlAPI}/${idNum}`, configConBody);
         if (!esResValido(response, idNum)) {
             return null;
         } else {
