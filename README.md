@@ -96,7 +96,7 @@ Antes de comenzar, asegurate de tener instalado:
 
 Los comandos se ejecutan con:
 
-npm run start <METHOD> <endpoint> [params]
+npm run start [METHOD] [endpoint] [params]
 
 
 A)  Obtener todos los productos:
