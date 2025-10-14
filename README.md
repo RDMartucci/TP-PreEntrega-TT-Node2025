@@ -96,17 +96,12 @@ Antes de comenzar, asegurate de tener instalado:
 
 Los comandos se ejecutan con:
 
-npm run start [params]
+npm run start <METHOD> <endpoint> [params]
 
-🔹 Obtener todos los productos:
+
+A)  Obtener todos los productos:
 
    ```bash
    npm run start GET products
-
-🔹 Obtener un producto por ID:
-
-   npm run start GET products/ID
    
-   ```bash
-   npm run start GET products/4
 
