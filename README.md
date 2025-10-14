@@ -103,12 +103,4 @@ A)  Obtener todos los productos:
 
    ```bash
    npm run start GET products
-   
-   
-# B) Obtener un producto sólo, por su ID:
 
-# {npm run start GET products/ID}
-
-#       ```bash
-#    npm run start GET products/7
-   
